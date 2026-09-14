@@ -1,22 +1,37 @@
-public class PedidoEncomienda extends Pedido {
+public class PedidoEncomienda extends Pedido implements Despachable, Cancelable, Rastreable {
 
-    public PedidoEncomienda(int id, String direccion, double distanciaKm) {
-        super(id, direccion, distanciaKm);
+    private final double pesoKg;
+
+    public PedidoEncomienda(int id, String direccionEntrega, double pesoKg) {
+        super(id, direccionEntrega);
+        this.pesoKg = pesoKg;
+    }
+
+    public double getPesoKg() {
+        return pesoKg;
     }
 
     @Override
-    public String getTipo() {
-        return "Encomienda";
+    public void despachar() {
+        setEstado(EstadoPedido.EN_REPARTO);
+        System.out.println("[PedidoEncomienda #" + getId() + "] despachado hacia " + getDireccionEntrega()
+                + " (" + pesoKg + " kg) -> estado: " + getEstado());
     }
 
     @Override
-    public void asignarRepartidor() {
-        this.repartidorAsignado = "Daniela Tapia (furgón)";
-        System.out.println("Repartidor asignado automáticamente: " + repartidorAsignado);
+    public void cancelar() {
+        setEstado(EstadoPedido.CANCELADO);
+        System.out.println("[PedidoEncomienda #" + getId() + "] cancelado.");
     }
 
     @Override
-    public double calcularTiempoEntrega() {
-        return 15 + (distanciaKm * 2);
+    public String rastrearUbicacion() {
+        return "Encomienda #" + getId() + " en estado " + getEstado()
+                + ", con destino a " + getDireccionEntrega();
+    }
+
+    @Override
+    public double calcularCostoEnvio() {
+        return 1000.0 + (pesoKg * 500.0);
     }
 }

@@ -1,3 +1,3 @@
 public interface Rastreable {
-    void verHistorial();
+    String rastrearUbicacion();
 }

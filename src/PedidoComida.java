@@ -1,22 +1,24 @@
-public class PedidoComida extends Pedido {
+public class PedidoComida extends Pedido implements Despachable, Cancelable {
 
-    public PedidoComida(int id, String direccion, double distanciaKm) {
-        super(id, direccion, distanciaKm);
+    public PedidoComida(int id, String direccionEntrega) {
+        super(id, direccionEntrega);
     }
 
     @Override
-    public String getTipo() {
-        return "Comida";
+    public void despachar() {
+        setEstado(EstadoPedido.EN_REPARTO);
+        System.out.println("[PedidoComida #" + getId() + "] despachado hacia " + getDireccionEntrega()
+                + " -> estado: " + getEstado());
     }
 
     @Override
-    public void asignarRepartidor() {
-        this.repartidorAsignado = "Luis Díaz (moto)";
-        System.out.println("Repartidor asignado automáticamente: " + repartidorAsignado);
+    public void cancelar() {
+        setEstado(EstadoPedido.CANCELADO);
+        System.out.println("[PedidoComida #" + getId() + "] cancelado.");
     }
 
     @Override
-    public double calcularTiempoEntrega() {
-        return 10 + (distanciaKm * 3);
+    public double calcularCostoEnvio() {
+        return 1500.0;
     }
 }

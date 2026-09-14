@@ -1,22 +1,24 @@
-public class PedidoExpress extends Pedido {
+public class PedidoExpress extends Pedido implements Despachable, Rastreable {
 
-    public PedidoExpress(int id, String direccion, double distanciaKm) {
-        super(id, direccion, distanciaKm);
+    public PedidoExpress(int id, String direccionEntrega) {
+        super(id, direccionEntrega);
     }
 
     @Override
-    public String getTipo() {
-        return "Express";
+    public void despachar() {
+        setEstado(EstadoPedido.EN_REPARTO);
+        System.out.println("[PedidoExpress #" + getId() + "] despachado PRIORITARIO hacia "
+                + getDireccionEntrega() + " -> estado: " + getEstado());
     }
 
     @Override
-    public void asignarRepartidor() {
-        this.repartidorAsignado = "Camila Rojas (bici eléctrica)";
-        System.out.println("Repartidor asignado automáticamente: " + repartidorAsignado);
+    public String rastrearUbicacion() {
+        return "Express #" + getId() + " en estado " + getEstado()
+                + ", con destino a " + getDireccionEntrega();
     }
 
     @Override
-    public double calcularTiempoEntrega() {
-        return 8 + (distanciaKm * 2.5);
+    public double calcularCostoEnvio() {
+        return 3500.0;
     }
 }
