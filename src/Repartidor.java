@@ -1,15 +1,51 @@
 public class Repartidor implements Runnable {
 
+    private int id;
     private final String nombre;
-    private final ZonaDeCarga zonaDeCarga;
+    private ZonaDeCarga zonaDeCarga;
 
+    // Constructor usado por la aplicación de las semanas anteriores.
     public Repartidor(String nombre, ZonaDeCarga zonaDeCarga) {
         this.nombre = nombre;
         this.zonaDeCarga = zonaDeCarga;
     }
 
+    // Constructor usado por JDBC.
+    public Repartidor(int id, String nombre) {
+        this.id = id;
+        this.nombre = nombre;
+    }
+
+    public Repartidor(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public ZonaDeCarga getZonaDeCarga() {
+        return zonaDeCarga;
+    }
+
+    public void setZonaDeCarga(ZonaDeCarga zonaDeCarga) {
+        this.zonaDeCarga = zonaDeCarga;
+    }
+
     @Override
     public void run() {
+        if (zonaDeCarga == null) {
+            return;
+        }
+
         while (true) {
             Pedido pedido = zonaDeCarga.retirarPedido();
 
